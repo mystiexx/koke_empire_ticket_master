@@ -1,0 +1,13 @@
+.nav {
+  text-transform: capitalize;
+  font-size: 14px;
+  font-weight: 500;
+  color: #b3b3b3;
+}
+
+.nav_active {
+  text-transform: capitalize;
+  font-size: 14px;
+  font-weight: 600;
+  color: #171717;
+}
