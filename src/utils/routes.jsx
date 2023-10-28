@@ -1,12 +1,16 @@
-import { LoginPage, Tickets } from "../pages";
+import { LoginPage, Tickets, Settings } from "../pages";
 
 export const routes = [
   {
-    path: "/",
+    path: "/sign-in",
     element: <LoginPage />,
   },
   {
     path: "/tickets",
     element: <Tickets />,
+  },
+  {
+    path: "/settings",
+    element: <Settings />,
   },
 ];

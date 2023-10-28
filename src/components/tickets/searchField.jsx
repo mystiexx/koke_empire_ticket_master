@@ -21,6 +21,7 @@ const SearchField = () => {
             type="text"
             placeholder="Search Invitation Code or Name..."
             _placeholder={{ fontSize: 14 }}
+            focusBorderColor="#F7DC64"
             w="350px"
           />
           <Button

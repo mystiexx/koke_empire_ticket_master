@@ -12,7 +12,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
-import painting from "../../assets/painting.jpg";
+import painting from "../../assets/mountain.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "../../services/firebase";
@@ -37,7 +37,8 @@ const LoginPage = () => {
         doc.password,
       );
       if (response) {
-        console.log(response);
+        localStorage.setItem("koke_admin", response.user.accessToken);
+        window.location.href = "/tickets";
       }
     } catch (error) {
       switch (error.code) {
@@ -68,13 +69,7 @@ const LoginPage = () => {
 
         <Box display={"grid"} placeItems={"center"} h="100vh" w="full">
           <Box w="350px">
-            <Text
-              textAlign={"center"}
-              mb="24px"
-              fontWeight={700}
-              fontSize={24}
-              color="#fff"
-            >
+            <Text textAlign={"center"} mb="24px" fontWeight={700} fontSize={24}>
               Welcome Back!
             </Text>
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -82,7 +77,7 @@ const LoginPage = () => {
                 <Form>
                   <Box display={"flex"} gap="15px" flexDir={"column"}>
                     <FormControl>
-                      <FormLabel color="#fff">Email</FormLabel>
+                      <FormLabel>Email</FormLabel>
                       <Input
                         type="email"
                         placeholder="Email"
@@ -99,7 +94,7 @@ const LoginPage = () => {
                       />
                     </FormControl>
                     <FormControl>
-                      <FormLabel color="#fff">Password</FormLabel>
+                      <FormLabel>Password</FormLabel>
                       <InputGroup>
                         <Input
                           type={show ? "text" : "password"}
@@ -120,6 +115,7 @@ const LoginPage = () => {
                             <IconButton
                               icon={<AiOutlineEyeInvisible />}
                               bg="transparent"
+                              color="#fff"
                               onClick={() => setShow(!show)}
                               _hover={{
                                 bg: "transparent",
@@ -129,6 +125,7 @@ const LoginPage = () => {
                             <IconButton
                               icon={<AiOutlineEye />}
                               bg="transparent"
+                              color="#fff"
                               onClick={() => setShow(!show)}
                               _hover={{
                                 bg: "transparent",

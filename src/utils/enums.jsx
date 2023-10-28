@@ -18,4 +18,10 @@ export const nav_routes = [
     name: "tickets",
     to: "/tickets",
   },
+  {
+    name: "settings",
+    to: "/settings",
+  },
 ];
+
+export const roles = ["admin", "staff"];

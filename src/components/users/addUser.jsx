@@ -13,54 +13,54 @@ import {
   Box,
   Button,
 } from "@chakra-ui/react";
-import { ticket_types } from "../../utils/enums";
 import { Formik, Form } from "formik";
-import commaNumber from "comma-number";
-import emailjs from "@emailjs/browser";
+// import emailjs from "@emailjs/browser";
+import { roles } from "../../utils/enums";
+import { app, db } from "../../services/firebase";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
+import toast from "react-hot-toast";
 
-const CreateTicket = ({ isOpen, onClose }) => {
+const AddUser = ({ isOpen, onClose, addUser }) => {
   const [loading, setLoading] = useState(false);
+  const usersCollectionRef = collection(db, "users");
+
+  const auth = getAuth(app);
+
   let initialValues = {
     name: "",
     email: "",
-    ticket_type: "",
+    role: "",
   };
 
   const handleSubmit = async (doc) => {
     setLoading(true);
-    const passcode = Math.random().toString(36).substring(2, 10);
-    let data = {
-      ...doc,
-      invitation_code: passcode,
-    };
-
-    const emailForm = {
-      send_to: doc.email,
-      name: doc.name,
-      passcode: passcode,
-    };
-    console.log(data);
-
-    const form = document.createElement("form");
-
-    Object.keys(emailForm).forEach((key) => {
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = key;
-      input.value = emailForm[key];
-      form.appendChild(input);
-    });
-
+    const password = Math.random().toString(36).substring(2, 10);
     try {
-      const result = await emailjs.sendForm(
-        "service_9habpmt",
-        "template_gvv4akt",
-        form,
-        "16RoAxdl74LyfqcYM",
+      await createUserWithEmailAndPassword(auth, doc.email, password).then(
+        async (response) => {
+          const data = {
+            _id: response?.user?.uid,
+            password: password,
+            created_at: new Date(),
+            ...doc,
+          };
+          await addDoc(usersCollectionRef, data);
+          addUser(data);
+          toast.success("Invite Sent!!!!");
+          onClose();
+        },
       );
-      console.log(result.text);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      switch (err.code) {
+        case "auth/email-already-in-use":
+        case "auth/invalid-email":
+          toast.error(err.message);
+          break;
+        case "auth/weak-password":
+          toast.error(err.message);
+          break;
+      }
     } finally {
       setLoading(false);
     }
@@ -69,7 +69,7 @@ const CreateTicket = ({ isOpen, onClose }) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Get Ticket</ModalHeader>
+        <ModalHeader>Add User</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb="24px">
           <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -107,14 +107,15 @@ const CreateTicket = ({ isOpen, onClose }) => {
                       Ticket Type
                     </FormLabel>
                     <Select
-                      name="ticket_type"
+                      name="role"
                       onChange={handleChange}
                       focusBorderColor="#F7DC64"
+                      textTransform={"capitalize"}
                     >
-                      <option>--Choose ticket type--</option>
-                      {ticket_types.map((data, idx) => (
-                        <option key={idx} value={data.name}>
-                          {data.name} - {commaNumber(data.price)}
+                      <option>--Choose Role--</option>
+                      {roles.map((data, idx) => (
+                        <option key={idx} value={data}>
+                          {data}
                         </option>
                       ))}
                     </Select>
@@ -134,7 +135,7 @@ const CreateTicket = ({ isOpen, onClose }) => {
                     bg: "#F7DC64",
                   }}
                 >
-                  Get Ticket
+                  Send Invite
                 </Button>
               </Form>
             )}
@@ -145,4 +146,4 @@ const CreateTicket = ({ isOpen, onClose }) => {
   );
 };
 
-export default CreateTicket;
+export default AddUser;
