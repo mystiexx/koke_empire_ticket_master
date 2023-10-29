@@ -52,7 +52,7 @@ const TableComponent = ({ tickets, handleCheckIn }) => {
                   <Td textTransform={"capitalize"}>{data.name}</Td>
                   <Td>{data.email}</Td>
                   <Td>{data.ticket_type.name}</Td>
-                  <Td>{commaNumber(data.ticket_type.price)}</Td>
+                  <Td>NGN {commaNumber(data.ticket_type.price)}</Td>
                   <Td>
                     {data.checked_in ? (
                       <Badge bg="#CFEEE1" color={"#10AA69"}>

@@ -50,6 +50,7 @@ const useTicketsAuth = (onClose) => {
       setCreating(true);
       delete currentUser["created_at"];
       const passcode = Math.random().toString(36).substring(2, 10);
+      const ticket = JSON.parse(docs.ticket_type);
       const data = {
         _id: generateRandom(10),
         ...docs,
@@ -64,6 +65,7 @@ const useTicketsAuth = (onClose) => {
         send_to: docs.email,
         name: docs.name,
         passcode: passcode,
+        ticket: ticket.name,
       };
       const form = document.createElement("form");
 

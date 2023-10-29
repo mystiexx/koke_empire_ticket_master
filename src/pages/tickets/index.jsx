@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Container, Image, Spinner, Box } from "@chakra-ui/react";
+import { Container, Image, Spinner, Box, Text } from "@chakra-ui/react";
 import SearchField from "../../components/tickets/searchField";
 import TableComponent from "../../components/tickets/table";
 import Layout from "../../layout";
-import ticket from "../../assets/ticket.jpg";
 import useTicketsAuth from "./useTicketsAuth";
+import Summary from "../../components/tickets/summary";
 
 const Tickets = () => {
   const [tickets, setTickets] = useState([]);
@@ -80,8 +80,11 @@ const Tickets = () => {
 
   return (
     <Layout>
-      <Image src={ticket} alt="ticket" h="40vh" objectFit={"cover"} w="full" />
-      <Container maxW="container.xl" py="100px">
+      <Container maxW="container.xl" py="50px">
+        <Text fontSize={24} fontWeight={700} mb="24px">
+          Tickets
+        </Text>
+        <Summary tickets={tickets} />
         <SearchField
           updateTickets={updateTickets}
           handleSearch={handleSearch}

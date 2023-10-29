@@ -29,8 +29,8 @@ const SearchField = ({ updateTickets, handleSearch, searching }) => {
         alignItems={isLargerThan800 ? "center" : null}
         mt="24px"
       >
-        <Text fontSize={24} fontWeight={700}>
-          Tickets
+        <Text fontSize={18} fontWeight={700}>
+          Tickets List
         </Text>
         <Box
           display={"flex"}

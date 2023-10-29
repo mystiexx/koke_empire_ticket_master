@@ -1,8 +1,26 @@
 import React from "react";
-import { Box, Container, Text, Button, useMediaQuery } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Text,
+  Button,
+  useMediaQuery,
+  IconButton,
+} from "@chakra-ui/react";
 import { nav_routes } from "../../utils/enums";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styles from "./styles.module.css";
+import { HiOutlineMenu } from "react-icons/hi";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+} from "@chakra-ui/react";
 
 const Navbar = () => {
   const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
@@ -20,8 +38,36 @@ const Navbar = () => {
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <Box display="flex" alignItems={"center"} gap={20}>
-            <Text fontWeight={700}>Koke Admin</Text>
+          <Box
+            display="flex"
+            alignItems={"center"}
+            gap={isLargerThan800 ? 20 : 2}
+          >
+            <Box display={isLargerThan800 ? "none" : "block"}>
+              <Menu>
+                <MenuButton
+                  as={IconButton}
+                  display={"grid"}
+                  placeItems={"center"}
+                  bg="transparent"
+                >
+                  <HiOutlineMenu size={20} />
+                </MenuButton>
+                <MenuList>
+                  {nav_routes.map((nav, idx) => (
+                    <MenuItem key={idx}>
+                      <Link to={nav.to} style={{ textTransform: "capitalize" }}>
+                        {nav.name}
+                      </Link>
+                    </MenuItem>
+                  ))}
+                  <MenuItem onClick={logOut} color={"red"}>
+                    Sign Out
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Box>
+            <Text fontWeight={700}>Koke Ticket Master</Text>
 
             <Box display={isLargerThan800 ? "flex" : "none"} gap="24px">
               {nav_routes.map((nav, idx) => (
@@ -37,7 +83,7 @@ const Navbar = () => {
               ))}
             </Box>
           </Box>
-          <Box>
+          <Box display={isLargerThan800 ? "block" : "none"}>
             <Button
               fontSize={14}
               bg="transparent"

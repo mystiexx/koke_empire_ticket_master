@@ -13,7 +13,7 @@ import { AiFillDelete } from "react-icons/ai";
 
 const head = ["name", "email", "role", "password", ""];
 
-const UserTable = ({ users, deleteUser }) => {
+const UserTable = ({ users, deleteUser, handleDelete }) => {
   return (
     <TableContainer w="100%" overflowX={"auto"} mt="50px">
       <Table variant={"striped"}>
@@ -36,7 +36,7 @@ const UserTable = ({ users, deleteUser }) => {
               <Td display="flex" gap="10px">
                 <IconButton
                   bg="transparent"
-                  onClick={() => deleteUser(data)}
+                  onClick={() => deleteUser(data, handleDelete)}
                   color={"red"}
                   _hover={{ bg: "transparent" }}
                   icon={<AiFillDelete />}

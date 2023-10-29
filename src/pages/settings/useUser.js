@@ -23,27 +23,23 @@ const useUser = (onClose) => {
   const [searching, setSearching] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    getUsers();
-  }, []);
-
   const getUsers = async () => {
     try {
       setLoading(true);
       const q = query(usersCollectionRef, orderBy("created_at", "desc"));
-      await getDocs(q).then((result) => {
-        const response = result.docs.map((doc) => {
-          const { created_at } = doc.data();
-          return {
-            ...doc.data(),
-            created_at: created_at.toDate(),
-            document_id: doc.id,
-          };
-        });
-        setUsers(response);
+      const result = await getDocs(q);
+
+      const response = result.docs.map((doc) => {
+        const { created_at } = doc.data();
+        return {
+          ...doc.data(),
+          created_at: created_at.toDate(),
+          document_id: doc.id,
+        };
       });
+      return response;
     } catch (error) {
-      console.log(error);
+      toast.error(error.message);
     } finally {
       setLoading(false);
     }
@@ -76,7 +72,7 @@ const useUser = (onClose) => {
     }
   }, [searchTerm]);
 
-  const handleSubmit = async (doc) => {
+  const handleSubmit = async (doc, onClose, updateUsers) => {
     setCreating(true);
     const password = Math.random().toString(36).substring(2, 10);
     try {
@@ -91,8 +87,8 @@ const useUser = (onClose) => {
         ...doc,
         created_at: new Date(),
       };
-      refetch();
       await addDoc(usersCollectionRef, data);
+      updateUsers();
       onClose();
       toast.success("User Added!!!");
     } catch (error) {
@@ -106,10 +102,10 @@ const useUser = (onClose) => {
     setSearchTerm(e.target.value);
   };
 
-  const deleteMember = async (docs) => {
+  const deleteMember = async (docs, handleDelete) => {
     try {
       await deleteDoc(doc(usersCollectionRef, docs.document_id)).then(() => {
-        setUsers((prev) => prev.filter((item) => item._id !== docs._id));
+        handleDelete(docs);
         toast.success("User Deleted");
       });
     } catch (error) {

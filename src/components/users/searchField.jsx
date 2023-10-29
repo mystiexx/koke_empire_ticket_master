@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import AddUser from "./addUser";
 
-const SearchField = ({ handleSearch, searching }) => {
+const SearchField = ({ handleSearch, searching, updateUsers }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
 
@@ -21,7 +21,7 @@ const SearchField = ({ handleSearch, searching }) => {
 
   return (
     <div>
-      <AddUser isOpen={isOpen} onClose={toggleShow} />
+      <AddUser isOpen={isOpen} onClose={toggleShow} updateUsers={updateUsers} />
       <Box
         display={"flex"}
         flexDir={isLargerThan800 ? "row" : "column"}

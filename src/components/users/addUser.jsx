@@ -18,13 +18,17 @@ import { Formik, Form } from "formik";
 import { roles } from "../../utils/enums";
 import useUser from "../../pages/settings/useUser";
 
-const AddUser = ({ isOpen, onClose }) => {
+const AddUser = ({ isOpen, onClose, updateUsers }) => {
   const { creating, handleSubmit } = useUser(onClose);
 
   let initialValues = {
     name: "",
     email: "",
     role: "",
+  };
+
+  const handleSave = (doc) => {
+    handleSubmit(doc, onClose, updateUsers);
   };
 
   return (
@@ -34,7 +38,7 @@ const AddUser = ({ isOpen, onClose }) => {
         <ModalHeader>Add User</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb="24px">
-          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+          <Formik initialValues={initialValues} onSubmit={handleSave}>
             {({ values, handleChange }) => (
               <Form>
                 <Box display="flex" gap="15px" flexDir={"column"}>
