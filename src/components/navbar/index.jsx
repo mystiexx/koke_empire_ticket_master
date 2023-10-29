@@ -1,24 +1,16 @@
 import React from "react";
-import { Box, Container, Text, Button } from "@chakra-ui/react";
+import { Box, Container, Text, Button, useMediaQuery } from "@chakra-ui/react";
 import { nav_routes } from "../../utils/enums";
 import { NavLink } from "react-router-dom";
 import styles from "./styles.module.css";
-import { app } from "../../services/firebase";
-import { getAuth, signOut } from "firebase/auth";
 
 const Navbar = () => {
-  const auth = getAuth(app);
+  const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
 
   const logOut = () => {
-    signOut(auth)
-      .then((response) => {
-        console.log(response);
-        localStorage.removeItem("koke_admin");
-        window.location.href = "/sign-in";
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    localStorage.removeItem("koke_admin");
+    localStorage.removeItem("koke_user");
+    window.location.href = "/sign-in";
   };
   return (
     <Box bg="#F5F5F5" py="20px">
@@ -31,7 +23,7 @@ const Navbar = () => {
           <Box display="flex" alignItems={"center"} gap={20}>
             <Text fontWeight={700}>Koke Admin</Text>
 
-            <Box display="flex" gap="24px">
+            <Box display={isLargerThan800 ? "flex" : "none"} gap="24px">
               {nav_routes.map((nav, idx) => (
                 <NavLink
                   to={nav.to}

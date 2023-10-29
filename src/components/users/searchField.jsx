@@ -7,28 +7,37 @@ import {
   InputGroup,
   InputRightElement,
   Spinner,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import AddUser from "./addUser";
 
-const SearchField = ({ addUser, handleSearch, searching }) => {
+const SearchField = ({ handleSearch, searching }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
+
+  const toggleShow = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div>
-      <AddUser
-        isOpen={isOpen}
-        onClose={() => setIsOpen(!isOpen)}
-        addUser={addUser}
-      />
+      <AddUser isOpen={isOpen} onClose={toggleShow} />
       <Box
         display={"flex"}
+        flexDir={isLargerThan800 ? "row" : "column"}
         justifyContent={"space-between"}
-        alignItems={"center"}
+        alignItems={isLargerThan800 ? "center" : null}
         mt="24px"
       >
         <Text fontSize={24} fontWeight={700}>
           Users
         </Text>
-        <Box display={"flex"} gap="10px" alignItems={"center"}>
+        <Box
+          display={"flex"}
+          gap="10px"
+          alignItems={"center"}
+          mt={isLargerThan800 ? null : "24px"}
+        >
           <InputGroup>
             <Input
               type="text"
@@ -43,7 +52,7 @@ const SearchField = ({ addUser, handleSearch, searching }) => {
           </InputGroup>
 
           <Button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={toggleShow}
             bg="#F7DC64"
             fontSize={14}
             _hover={{

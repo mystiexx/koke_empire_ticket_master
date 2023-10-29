@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Modal,
   ModalOverlay,
@@ -16,16 +16,10 @@ import {
 import { Formik, Form } from "formik";
 // import emailjs from "@emailjs/browser";
 import { roles } from "../../utils/enums";
-import { app, db } from "../../services/firebase";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection } from "firebase/firestore";
-import toast from "react-hot-toast";
+import useUser from "../../pages/settings/useUser";
 
-const AddUser = ({ isOpen, onClose, addUser }) => {
-  const [loading, setLoading] = useState(false);
-  const usersCollectionRef = collection(db, "users");
-
-  const auth = getAuth(app);
+const AddUser = ({ isOpen, onClose }) => {
+  const { creating, handleSubmit } = useUser(onClose);
 
   let initialValues = {
     name: "",
@@ -33,40 +27,8 @@ const AddUser = ({ isOpen, onClose, addUser }) => {
     role: "",
   };
 
-  const handleSubmit = async (doc) => {
-    setLoading(true);
-    const password = Math.random().toString(36).substring(2, 10);
-    try {
-      await createUserWithEmailAndPassword(auth, doc.email, password).then(
-        async (response) => {
-          const data = {
-            _id: response?.user?.uid,
-            password: password,
-            created_at: new Date(),
-            ...doc,
-          };
-          await addDoc(usersCollectionRef, data);
-          addUser(data);
-          toast.success("Invite Sent!!!!");
-          onClose();
-        },
-      );
-    } catch (err) {
-      switch (err.code) {
-        case "auth/email-already-in-use":
-        case "auth/invalid-email":
-          toast.error(err.message);
-          break;
-        case "auth/weak-password":
-          toast.error(err.message);
-          break;
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size="sm">
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Add User</ModalHeader>
@@ -129,13 +91,13 @@ const AddUser = ({ isOpen, onClose, addUser }) => {
                   type="submit"
                   bg="#F7DC64"
                   fontSize={14}
-                  isLoading={loading}
-                  isDisabled={loading}
+                  isLoading={creating}
+                  isDisabled={creating}
                   _hover={{
                     bg: "#F7DC64",
                   }}
                 >
-                  Send Invite
+                  Save
                 </Button>
               </Form>
             )}

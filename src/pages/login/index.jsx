@@ -14,46 +14,17 @@ import {
 import { Formik, Form } from "formik";
 import painting from "../../assets/mountain.png";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { app } from "../../services/firebase";
-import toast from "react-hot-toast";
+import useAuth from "./useAuth";
 
 const LoginPage = () => {
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const auth = getAuth(app);
+  const { loading, handleSubmit } = useAuth();
 
   let initialValues = {
     email: "",
     password: "",
   };
 
-  const handleSubmit = async (doc) => {
-    setLoading(true);
-    try {
-      const response = await signInWithEmailAndPassword(
-        auth,
-        doc.email,
-        doc.password,
-      );
-      if (response) {
-        localStorage.setItem("koke_admin", response.user.accessToken);
-        window.location.href = "/tickets";
-      }
-    } catch (error) {
-      switch (error.code) {
-        case "auth/invalid-login-credentials":
-        case "auth/user-disabled":
-        case "auth/user-not-found":
-          toast.error("Invalid email/password");
-          break;
-        case "auth/wrong-password":
-          toast.error("Wrong Password");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
     <Box h="100vh" position={"relative"}>
       <Box display={"flex"}>

@@ -1,29 +1,57 @@
 import React, { useState } from "react";
-import { Input, Button, Box, Text } from "@chakra-ui/react";
+import {
+  Input,
+  Button,
+  Box,
+  Text,
+  InputGroup,
+  InputRightElement,
+  Spinner,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import CreateTicket from "./createTicket";
 
-const SearchField = () => {
+const SearchField = ({ updateTickets, handleSearch, searching }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
+
   return (
     <>
-      <CreateTicket isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />
+      <CreateTicket
+        isOpen={isOpen}
+        onClose={() => setIsOpen(!isOpen)}
+        updateTickets={updateTickets}
+      />
       <Box
         display={"flex"}
+        flexDir={isLargerThan800 ? "row" : "column"}
         justifyContent={"space-between"}
-        alignItems={"center"}
+        alignItems={isLargerThan800 ? "center" : null}
         mt="24px"
       >
         <Text fontSize={24} fontWeight={700}>
           Tickets
         </Text>
-        <Box display={"flex"} gap="10px" alignItems={"center"}>
-          <Input
-            type="text"
-            placeholder="Search Invitation Code or Name..."
-            _placeholder={{ fontSize: 14 }}
-            focusBorderColor="#F7DC64"
-            w="350px"
-          />
+        <Box
+          display={"flex"}
+          gap="10px"
+          alignItems={"center"}
+          mt={isLargerThan800 ? null : "24px"}
+        >
+          <InputGroup>
+            <Input
+              type="text"
+              placeholder="Search Invitation Code or Name..."
+              _placeholder={{ fontSize: 12 }}
+              onChange={handleSearch}
+              focusBorderColor="#F7DC64"
+              w="full"
+            />
+            <InputRightElement>
+              {searching && <Spinner size={"sm"} color="#F7DC64" />}
+            </InputRightElement>
+          </InputGroup>
+
           <Button
             onClick={() => setIsOpen(!isOpen)}
             bg="#F7DC64"
