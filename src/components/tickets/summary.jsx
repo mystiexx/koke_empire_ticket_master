@@ -18,7 +18,7 @@ const Summary = ({ tickets }) => {
       try {
         const response = await getTickets();
         const total_revenue = response.reduce(
-          (a, b) => a + b.ticket_type.price,
+          (a, b) => a + b.ticket_type.price * b.quantity,
           0,
         );
         const regular = response.filter(

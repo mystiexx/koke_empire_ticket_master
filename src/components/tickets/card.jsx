@@ -34,6 +34,9 @@ export const GuestCard = ({
   data,
   sending,
   checking,
+  phone,
+  proof,
+  quantity,
 }) => {
   return (
     <Box p="16px" boxShadow={"sm"} bg="#fff" borderRadius={"4px"}>
@@ -60,8 +63,36 @@ export const GuestCard = ({
         <Text textTransform={"capitalize"} fontWeight={600}>
           {name}
         </Text>
-        <Text fontSize={14}>{email}</Text>
-        {code && <Text>Invitation code: {code}</Text>}
+        <Text fontSize={14} mt="4px">
+          {email}
+        </Text>
+        {phone && (
+          <Text fontSize={14} mt="4px">
+            Phone Number: {phone}
+          </Text>
+        )}
+
+        {quantity && (
+          <Text fontSize={14} mt="4px">
+            Quantity: {quantity}
+          </Text>
+        )}
+
+        {proof && (
+          <a
+            href={proof}
+            target={"_blank"}
+            rel="noreferrer noopener"
+            style={{ fontSize: 12, textDecoration: "underline" }}
+          >
+            View Proof of Payment
+          </a>
+        )}
+        {code && (
+          <Text fontSize={14} mt="5px">
+            Invitation code: {code}
+          </Text>
+        )}
       </Box>
 
       <Box display={"flex"} justifyContent={"flex-end"} mt="24px">

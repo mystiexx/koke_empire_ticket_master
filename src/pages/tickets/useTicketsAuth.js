@@ -126,10 +126,6 @@ const useTicketsAuth = (onClose) => {
       setSending(true);
       const passcode = Math.random().toString(36).substring(2, 10);
       const ticketRef = doc(db, "tickets", result.document_id);
-      await updateDoc(ticketRef, {
-        ticket_sent: true,
-        invitation_code: passcode,
-      });
       let docs = {
         ...result,
         ticket_sent: true,
@@ -145,6 +141,10 @@ const useTicketsAuth = (onClose) => {
         },
       };
       await axios.post(baseUrl, sendEmail);
+      await updateDoc(ticketRef, {
+        ticket_sent: true,
+        invitation_code: passcode,
+      });
       toast.success("Invite Sent!!!");
       updateCheckInUser(docs);
     } catch (err) {

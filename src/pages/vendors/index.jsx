@@ -209,6 +209,7 @@ const Vendors = () => {
                 email={vendor.email}
                 status={vendor.checked_in}
                 ticket={vendor.business_nature}
+                phone={vendor.phone}
                 data={vendor}
                 checking={checking}
                 handleCheckIn={handleCheckIn}

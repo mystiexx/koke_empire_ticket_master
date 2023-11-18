@@ -130,6 +130,9 @@ const Tickets = () => {
                       name={ticket?.name}
                       email={ticket.email}
                       code={ticket.invitation_code}
+                      phone={ticket.phone}
+                      proof={ticket.proof}
+                      quantity={ticket.quantity}
                       paid={ticket.ticket_sent}
                       handleCheckIn={handleCheckIn}
                       handleInvite={handleInvite}
