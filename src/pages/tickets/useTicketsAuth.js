@@ -12,12 +12,16 @@ import {
 import { generateRandom } from "../../utils/utils";
 import toast from "react-hot-toast";
 import emailjs from "@emailjs/browser";
+import axios from "axios";
+
+const baseUrl = "https://koke-emailing.onrender.com/api/send-email";
 
 const useTicketsAuth = (onClose) => {
   const [loading, setLoading] = useState(false);
   const currentUser = JSON.parse(localStorage.getItem("koke_user"));
   const ticketCollectionRef = collection(db, "tickets");
   const [creating, setCreating] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const getTickets = async () => {
     try {
@@ -36,7 +40,6 @@ const useTicketsAuth = (onClose) => {
           document_id: doc.id,
         };
       });
-
       return response;
     } catch (err) {
       toast.error(err.message);
@@ -118,6 +121,39 @@ const useTicketsAuth = (onClose) => {
     }
   };
 
+  const sendInvite = async (result, updateCheckInUser) => {
+    try {
+      setSending(true);
+      const passcode = Math.random().toString(36).substring(2, 10);
+      const ticketRef = doc(db, "tickets", result.document_id);
+      await updateDoc(ticketRef, {
+        ticket_sent: true,
+        invitation_code: passcode,
+      });
+      let docs = {
+        ...result,
+        ticket_sent: true,
+        invitation_code: passcode,
+      };
+      let sendEmail = {
+        send_to: result.email,
+        templateType: result.ticket_type.name,
+        subject: "Your ticket is here!!!!",
+        templateData: {
+          fullName: result.name,
+          passcode,
+        },
+      };
+      await axios.post(baseUrl, sendEmail);
+      toast.success("Invite Sent!!!");
+      updateCheckInUser(docs);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setSending(false);
+    }
+  };
+
   return {
     handleSaveTicket,
     loading,
@@ -125,6 +161,8 @@ const useTicketsAuth = (onClose) => {
     getTickets,
     hadnleSearch,
     updateCheckIn,
+    sendInvite,
+    sending,
   };
 };
 

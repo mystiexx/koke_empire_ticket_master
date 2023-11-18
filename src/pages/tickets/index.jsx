@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Container, Image, Spinner, Box, Text } from "@chakra-ui/react";
+import {
+  Container,
+  useMediaQuery,
+  Spinner,
+  Box,
+  Text,
+  Grid,
+} from "@chakra-ui/react";
 import SearchField from "../../components/tickets/searchField";
-import TableComponent from "../../components/tickets/table";
 import Layout from "../../layout";
 import useTicketsAuth from "./useTicketsAuth";
 import Summary from "../../components/tickets/summary";
+import { GuestCard } from "../../components/tickets/card";
 
 const Tickets = () => {
   const [tickets, setTickets] = useState([]);
-  const { getTickets, updateCheckIn, loading } = useTicketsAuth();
+  const { getTickets, updateCheckIn, loading, sendInvite, sending } =
+    useTicketsAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [searching, setSearching] = useState(false);
+  const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
 
   const updateTickets = async () => {
     try {
@@ -78,6 +87,10 @@ const Tickets = () => {
     updateCheckIn(data, updateCheckInUser);
   };
 
+  const handleInvite = (data) => {
+    sendInvite(data, updateCheckInUser);
+  };
+
   return (
     <Layout>
       <Container maxW="container.xl" py="50px">
@@ -95,7 +108,38 @@ const Tickets = () => {
             <Spinner size={"xl"} color="#F7DC64" />{" "}
           </Box>
         ) : (
-          <TableComponent tickets={tickets} handleCheckIn={handleCheckIn} />
+          <Box>
+            {tickets?.length <= 0 ? (
+              <Box h="40vh" display={"grid"} placeItems={"center"}>
+                <Text fontSize={24} fontWeight={700} textAlign={"center"}>
+                  No Ticket Sales Yet
+                </Text>
+              </Box>
+            ) : (
+              <Box mt="50px">
+                <Grid
+                  templateColumns={isLargerThan800 ? "repeat(4, 1fr)" : "auto"}
+                  gap="24px"
+                >
+                  {tickets.map((ticket) => (
+                    <GuestCard
+                      key={ticket._id}
+                      data={ticket}
+                      ticket={ticket.ticket_type}
+                      status={ticket.checked_in}
+                      name={ticket?.name}
+                      email={ticket.email}
+                      code={ticket.invitation_code}
+                      paid={ticket.ticket_sent}
+                      handleCheckIn={handleCheckIn}
+                      handleInvite={handleInvite}
+                      sending={sending}
+                    />
+                  ))}
+                </Grid>
+              </Box>
+            )}
+          </Box>
         )}
       </Container>
     </Layout>

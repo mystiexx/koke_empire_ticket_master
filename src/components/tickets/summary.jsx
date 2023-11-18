@@ -25,7 +25,7 @@ const Summary = ({ tickets }) => {
           (data) => data.ticket_type.name === "Regular",
         );
         const standard = response.filter(
-          (data) => data.ticket_type.name === "Standard",
+          (data) => data.ticket_type.name === "Trybe Table",
         );
         const vip = response.filter((data) => data.ticket_type.name === "VIP");
         setRegular(regular.length);
@@ -64,14 +64,15 @@ const Summary = ({ tickets }) => {
             value={`${commaNumber(regular)}`}
           />
         </GridItem>
-        <GridItem>
-          <Card
-            title={"standard tickets sold"}
-            value={`${commaNumber(standard)}`}
-          />
-        </GridItem>
+
         <GridItem>
           <Card title={"VIP tickets sold"} value={`${commaNumber(vip)}`} />
+        </GridItem>
+        <GridItem>
+          <Card
+            title={"Trybe Table  sold"}
+            value={`${commaNumber(standard)}`}
+          />
         </GridItem>
       </Grid>
     </Box>

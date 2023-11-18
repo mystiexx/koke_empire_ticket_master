@@ -19,6 +19,10 @@ export const nav_routes = [
     to: "/tickets",
   },
   {
+    name: "vendors",
+    to: "/vendors",
+  },
+  {
     name: "settings",
     to: "/settings",
   },

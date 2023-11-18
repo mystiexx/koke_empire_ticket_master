@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Input,
-  Button,
   Box,
   Text,
   InputGroup,
@@ -9,19 +8,12 @@ import {
   Spinner,
   useMediaQuery,
 } from "@chakra-ui/react";
-import CreateTicket from "./createTicket";
 
-const SearchField = ({ updateTickets, handleSearch, searching }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const SearchField = ({ handleSearch, searching }) => {
   const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
 
   return (
     <>
-      <CreateTicket
-        isOpen={isOpen}
-        onClose={() => setIsOpen(!isOpen)}
-        updateTickets={updateTickets}
-      />
       <Box
         display={"flex"}
         flexDir={isLargerThan800 ? "row" : "column"}
@@ -51,17 +43,6 @@ const SearchField = ({ updateTickets, handleSearch, searching }) => {
               {searching && <Spinner size={"sm"} color="#F7DC64" />}
             </InputRightElement>
           </InputGroup>
-
-          <Button
-            onClick={() => setIsOpen(!isOpen)}
-            bg="#F7DC64"
-            fontSize={14}
-            _hover={{
-              bg: "#F7DC64",
-            }}
-          >
-            Get Ticket
-          </Button>
         </Box>
       </Box>
     </>

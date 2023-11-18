@@ -1,4 +1,5 @@
 import { LoginPage, Tickets, Settings } from "../pages";
+import Vendors from "../pages/vendors";
 
 export const routes = [
   {
@@ -8,6 +9,10 @@ export const routes = [
   {
     path: "/tickets",
     element: <Tickets />,
+  },
+  {
+    path: "/vendors",
+    element: <Vendors />,
   },
   {
     path: "/settings",

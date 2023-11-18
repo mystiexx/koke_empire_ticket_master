@@ -27,7 +27,7 @@ const head = [
 const TableComponent = ({ tickets, handleCheckIn }) => {
   return (
     <>
-      {tickets.length <= 0 ? (
+      {tickets?.length <= 0 ? (
         <Box h="40vh" display={"grid"} placeItems={"center"}>
           <Text fontSize={24} fontWeight={700} textAlign={"center"}>
             No Ticket Sales Yet

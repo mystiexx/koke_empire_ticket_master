@@ -6,21 +6,14 @@ import {
   Button,
   useMediaQuery,
   IconButton,
+  Image,
 } from "@chakra-ui/react";
 import { nav_routes } from "../../utils/enums";
 import { Link, NavLink } from "react-router-dom";
 import styles from "./styles.module.css";
 import { HiOutlineMenu } from "react-icons/hi";
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
-} from "@chakra-ui/react";
+import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import logo from "../../assets/new_logo.png";
 
 const Navbar = () => {
   const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
@@ -31,7 +24,7 @@ const Navbar = () => {
     window.location.href = "/sign-in";
   };
   return (
-    <Box bg="#F5F5F5" py="20px">
+    <Box bg="#222222" py="20px">
       <Container maxW="container.xl">
         <Box
           display="flex"
@@ -50,6 +43,7 @@ const Navbar = () => {
                   display={"grid"}
                   placeItems={"center"}
                   bg="transparent"
+                  color="#fff"
                 >
                   <HiOutlineMenu size={20} />
                 </MenuButton>
@@ -67,7 +61,7 @@ const Navbar = () => {
                 </MenuList>
               </Menu>
             </Box>
-            <Text fontWeight={700}>Koke Ticket Master</Text>
+            <Image src={logo} h="60px" />
 
             <Box display={isLargerThan800 ? "flex" : "none"} gap="24px">
               {nav_routes.map((nav, idx) => (
