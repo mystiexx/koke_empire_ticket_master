@@ -37,6 +37,8 @@ export const GuestCard = ({
   phone,
   proof,
   quantity,
+  refNumber,
+  reference,
 }) => {
   return (
     <Box p="16px" boxShadow={"sm"} bg="#fff" borderRadius={"4px"}>
@@ -72,9 +74,15 @@ export const GuestCard = ({
           </Text>
         )}
 
+        {reference && (
+          <Text fontSize={14} mt="4px">
+            Reference No: {reference}
+          </Text>
+        )}
+
         {quantity && (
           <Text fontSize={14} mt="4px">
-            Quantity: {quantity}
+            Quantity: {quantity} - {refNumber}
           </Text>
         )}
 
