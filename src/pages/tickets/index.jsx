@@ -20,6 +20,7 @@ const Tickets = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searching, setSearching] = useState(false);
   const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
+  const [originalTickets, setOriginalTickets] = useState([]);
 
   const updateTickets = async () => {
     try {
@@ -44,6 +45,7 @@ const Tickets = () => {
     const fetchData = async () => {
       try {
         const response = await getTickets();
+        setOriginalTickets(response);
         setTickets(response);
       } catch (err) {
         console.log(err);
@@ -59,8 +61,8 @@ const Tickets = () => {
       const handler = setTimeout(() => {
         const results = tickets.filter(
           (data) =>
-            data?.invitation_code.toLowerCase().includes(term) ||
-            data?.name.toLowerCase().includes(term),
+            data?.invitation_code?.toLowerCase().includes(term) ||
+            data?.name?.toLowerCase().includes(term),
         );
         setTickets(results);
         setSearching(false);
@@ -72,6 +74,18 @@ const Tickets = () => {
     } else {
       const response = await getTickets();
       setTickets(response);
+    }
+  };
+
+  const handleFilter = async (e) => {
+    const name = e.target.value;
+    if (name !== "") {
+      const result = originalTickets.filter(
+        (data) => data?.ticket_type?.name === name,
+      );
+      setTickets(result);
+    } else {
+      setTickets(originalTickets);
     }
   };
 
@@ -102,6 +116,7 @@ const Tickets = () => {
           updateTickets={updateTickets}
           handleSearch={handleSearch}
           searching={searching}
+          handleFilter={handleFilter}
         />
         {loading ? (
           <Box h="90vh" display={"grid"} placeItems={"center"}>
