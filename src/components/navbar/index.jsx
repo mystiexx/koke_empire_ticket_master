@@ -14,14 +14,16 @@ import styles from "./styles.module.css";
 import { HiOutlineMenu } from "react-icons/hi";
 import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import logo from "../../assets/new_logo.png";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isLargerThan800] = useMediaQuery("(min-width: 800px)");
+  const navigate = useNavigate();
 
   const logOut = () => {
     localStorage.removeItem("koke_admin");
     localStorage.removeItem("koke_user");
-    window.location.href = "/sign-in";
+    navigate("/sign-in");
   };
   return (
     <Box bg="#222222" py="20px">

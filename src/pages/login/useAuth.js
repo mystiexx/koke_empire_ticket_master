@@ -41,7 +41,7 @@ const useAuth = () => {
           localStorage.setItem("koke_user", JSON.stringify(user));
           setTimeout(() => {
             navigate("/tickets");
-          }, 1000);
+          }, 2000);
         } else {
           toast.error("Wrong password");
         }
