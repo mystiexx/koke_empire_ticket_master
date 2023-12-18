@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { app, db } from "../../services/firebase";
 import { getDocs, query, collection } from "firebase/firestore";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const useAuth = () => {
   const [loading, setLoading] = useState(false);
   const usersCollectionRef = collection(db, "users");
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -37,7 +39,9 @@ const useAuth = () => {
           delete user["password"];
           localStorage.setItem("koke_admin", user._id);
           localStorage.setItem("koke_user", JSON.stringify(user));
-          window.location.href = "/tickets";
+          setTimeout(() => {
+            navigate("/tickets");
+          }, 1000);
         } else {
           toast.error("Wrong password");
         }
